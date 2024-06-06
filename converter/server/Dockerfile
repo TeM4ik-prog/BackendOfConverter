@@ -28,7 +28,7 @@ RUN apk add --no-cache \
 # Tell Puppeteer to skip installing Chrome. We'll be using the installed package.
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD true
 
-WORKDIR /app
+# WORKDIR /app
 
 # install dependencies
 ADD package.json .
