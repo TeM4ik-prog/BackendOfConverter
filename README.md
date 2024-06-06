@@ -9,7 +9,7 @@
 1.установить Docker(https://docs.docker.com/engine/install/)
 
 2.Сделайте сборку проекта
-```docker build -t stickers-converter .```
+ ```docker build -t stickers-converter .```
 
 
 3.Запуститу сборку
