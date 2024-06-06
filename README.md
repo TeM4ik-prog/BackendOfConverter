@@ -9,12 +9,14 @@
 1.установить Docker(https://docs.docker.com/engine/install/)
 
 2.Сделайте сборку проекта
- ```docker build -t stickers-converter .```
+
+```docker build -t stickers-converter .```
 
 
 3.Запуститу сборку
 
 Тут порт 3000. Чтобы все запросы с клиента корректно работали измените файл converter\client\localSitePath.js
+
 ```docker run -v ${PWD}:/app -p 3000:3000 stickersconverter```
 
 
