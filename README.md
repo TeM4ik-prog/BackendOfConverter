@@ -8,7 +8,8 @@
 
 1.установить Docker(https://docs.docker.com/engine/install/)
 
-2.```powershell
+2.
+```powershell
 docker build -t stickers-converter .```
 
 
