@@ -14,7 +14,7 @@ const convertFiles = async function (ar_strickers, browser, options) {
     try {
       await toGifFromFile(sticker, `./public/stickers/${path.parse(sticker.originalname).name}.gif`, options);
 
-      ar_paths.push(`./stickers/${path.parse(sticker.originalname).name}.gif`)
+      ar_paths.push({ url: `../stickers/${path.parse(sticker.originalname).name}.gif`, confirmed: false })
     } catch (e) {
       console.error(e);
     }

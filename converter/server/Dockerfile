@@ -8,7 +8,7 @@ RUN cargo install gifski
 # RUN apt-get update && \
 #     apt-get install -y gifski
 
-FROM node:14-alpine
+FROM node:16-alpine
 
 COPY --from=builder /usr/local/cargo/bin/gifski /usr/local/bin/gifski
 
@@ -18,22 +18,31 @@ RUN apk add --no-cache \
       chromium \
       nss \
       freetype \
-      freetype-dev \
+      freetype-dev 
+
+
+
+
+RUN apk add --no-cache \
       harfbuzz \
       ca-certificates \
       ttf-freefont \
       git \
       libwebp-tools
 
-# Tell Puppeteer to skip installing Chrome. We'll be using the installed package.
-ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD true
 
-# WORKDIR /app
+
+# Tell Puppeteer to skip installing Chrome. We'll be using the installed package.
+ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
+ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
+
+WORKDIR /app
 
 # install dependencies
-ADD package.json .
-ADD package-lock.json .
+COPY package.json package-lock.json ./
 RUN npm install
+
+# RUN npm rebuild sqlite3
 
 # build the app
 # ADD tests tests

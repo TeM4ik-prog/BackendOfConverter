@@ -3,4 +3,6 @@ npm-debug.log
 .DS_Store
 .git
 .gitignore
+
+node_modules/sqlite3/
 /tests
