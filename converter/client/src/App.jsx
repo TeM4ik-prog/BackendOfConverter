@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState } from 'react'
+import { createContext, useEffect, useRef, useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
@@ -15,19 +15,46 @@ import UserEntry from './pages/userentry/userentry'
 import axios from 'axios'
 import localSitePath from '../localSitePath'
 import UserProfile from './pages/UserProfile/userProfile'
+import Footer from './components/particals/footer/footer'
+import Popup from './components/particals/popup/popup'
+import ChangeStickerInfo from './pages/ChangeStickerInfo/changeSticker'
+import StickerPackPage from './pages/StickerPack/stickerpack'
 
 
 
 let userDataContext = createContext(null)
+let PopupContext = createContext(null)
 
 let StickersStatusContext = createContext(null)
 // main - добавление в избранные
 // basket - удаление из избранных
-// myЫешслукы - удаление из моих стикеров
+// myStickers - удаление из моих стикеров
+
+
+
+
 
 
 
 function App() {
+  const [messages, setMessages] = useState([]);
+  const timersRef = useRef({});
+
+  const showMessage = ({ message, bad }) => {
+    // console.log(m)
+    const newMessage = { id: `${Date.now()}`, message, bad };
+
+    setMessages([newMessage, ...messages]);
+
+    const timerId = setTimeout(() => {
+      setMessages(prevMessages => prevMessages.filter(msg => msg.id !== newMessage.id));
+    }, 3000);
+
+    console.log("Add")
+    console.log(newMessage)
+
+    timersRef.current[newMessage.id] = timerId;
+  };
 
   const [userData, setUserData] = useState('');
 
@@ -48,40 +75,54 @@ function App() {
 
   return (
     <>
+      <Popup messages={messages} />
+
       <userDataContext.Provider value={{ userData }}>
-        <StickersStatusContext.Provider value={"main"} >
-          <Router>
-            <Routes>
-              <Route path='/' element={<MainPage />} />
-              <Route exact path='/userentry' element={<UserEntry />} />
+        <PopupContext.Provider value={{ showMessage }}>
+          <StickersStatusContext.Provider value={"main"} >
+            <Router>
+              <Routes>
+                <Route path='/' element={<MainPage />} />
+                <Route exact path='/userentry' element={<UserEntry />} />
 
 
-              <Route exact path='/stickers/*' element={
-                <Routes>
+                <Route exact path='/stickerPacks/*' element={
+                  <Routes>
 
-                  <Route index element={
-                    <>
-                      <StickersListPage />
-                    </>
-                  } />
+                    <Route index element={
+                      <>
+                        <StickersListPage />
+                      </>
+                    } />
 
-                  <Route path='/:category'
-                    element={<StickersListPage />}
-                  />
+                    <Route path='/:category'
+                      element={<StickersListPage />}
+                    />
 
-                </Routes>
-              } />
+                    <Route path='/pack/:stickerPackId'
+                      element={<StickerPackPage />}
+                    />
+
+                    <Route path='/change/:stickerId'
+                      element={<ChangeStickerInfo />}
+                    />
+
+                  </Routes>
+                } />
 
 
-              {/* Пути для которых объязательна авторизация */}
-              <Route exact path='/profile/*' element={userData ? <UserProfile /> : <RegisterRedirect />} />
-              <Route path='/convert' element={userData ? <ConvertPage /> : <RegisterRedirect />} />
+                {/* Пути для которых объязательна авторизация */}
+                <Route exact path='/profile/*' element={userData ? <UserProfile /> : <RegisterRedirect />} />
+                <Route path='/convert' element={userData ? <ConvertPage /> : <RegisterRedirect />} />
 
-            </Routes>
-          </Router>
+              </Routes>
+
+              <Footer />
+            </Router>
 
 
-        </StickersStatusContext.Provider>
+          </StickersStatusContext.Provider>
+        </PopupContext.Provider>
       </userDataContext.Provider>
 
 
@@ -93,5 +134,6 @@ function App() {
 export {
   App,
   userDataContext,
-  StickersStatusContext
+  StickersStatusContext,
+  PopupContext
 }

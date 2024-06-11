@@ -3,17 +3,11 @@ const { sequelize } = require("../config/SequelizeConfig");
 
 
 
-const FavoritesStickers = sequelize.define('Favorites', {}, {
-    tableName: 'Favorites',
-
-    onDelete: 'CASCADE'
-});
-
-const UserStickers = sequelize.define('UserStickers', {}, {
-    tableName: 'UserStickers',
-
-    onDelete: 'CASCADE'
-});
+// const FavoritePacks = sequelize.define('FavoritePacks', {}, {
+//     // tableName: 'FavoriteSticks',
+//     timestamps: true,
+//     onDelete: 'CASCADE'
+// });
 
 
 
@@ -30,6 +24,9 @@ const User = sequelize.define('User', {
         type: DataTypes.INTEGER,
         defaultValue: 0
     }
+}, {
+    tableName: 'User',
+    onDelete: 'CASCADE'
 })
 
 
@@ -47,6 +44,8 @@ const Sticker = sequelize.define('Sticker', {
         type: DataTypes.STRING,
         allowNull: false
     },
+
+    // onDelete: 'CASCADE'
 })
 
 const Category = sequelize.define('Category', {
@@ -62,30 +61,45 @@ const Category = sequelize.define('Category', {
         unique: true
     },
 
+}, {
+    tableName: 'Category',
+    onDelete: 'CASCADE'
 });
 
 
-let StickerPack = sequelize.define('StickerPack', {
+const StickerPack = sequelize.define('StickerPack', {
 
-})
+    packName: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
 
-//для избранных стикеров
-User.belongsToMany(Sticker, { through: FavoritesStickers, as: "Favorite", onDelete: 'CASCADE' });
-Sticker.belongsToMany(User, { through: FavoritesStickers, as: "Favorite", onDelete: 'CASCADE' });
-
-// для стикеров пользователя
-User.belongsToMany(Sticker, { through: UserStickers, as: "UserSticks", onDelete: 'CASCADE' });
-Sticker.belongsToMany(User, { through: UserStickers, as: "UserSticks", onDelete: 'CASCADE' });
-
-
-// для стикерпаков
-StickerPack.hasMany(Sticker, { onDelete: 'CASCADE' });
-Sticker.belongsTo(StickerPack, { onDelete: 'CASCADE' });
+    // packImg: 
+}, {
+    tableName: 'StickerPack',
+    onDelete: 'CASCADE'
+});
 
 
-// для категорий товаров
-Category.hasMany(Sticker, { onDelete: 'CASCADE' });
-Sticker.belongsTo(Category, { onDelete: 'CASCADE' });
+// // для избранных стикеров
+// User.belongsToMany(StickerPack, { through: FavoritePacks, as: "Favorite", foreignKey: 'UserId' });
+// StickerPack.belongsToMany(User, { through: FavoritePacks, as: "Favorite", foreignKey: 'stickerId' });
+
+
+
+// для стикпаков пользователя
+User.hasMany(StickerPack, { foreignKey: 'UserId', onDelete: 'CASCADE' });
+StickerPack.belongsTo(User, { foreignKey: 'UserId', onDelete: 'CASCADE' });
+
+// // для стикеров в стикерпаке
+StickerPack.hasMany(Sticker, { as: 'Stickers', foreignKey: 'StickerPackId', onDelete: 'CASCADE' });
+Sticker.belongsTo(StickerPack, { as: 'StickerPack', foreignKey: 'StickerPackId', onDelete: 'CASCADE' });
+
+
+
+// // для категорий товаров
+Category.hasMany(StickerPack, { foreignKey: 'CategoryId', onDelete: 'CASCADE' });
+StickerPack.belongsTo(Category, { foreignKey: 'CategoryId', onDelete: 'CASCADE' });
 
 
 
@@ -96,6 +110,6 @@ module.exports = {
     Category,
     User,
 
-    UserStickers,
-    FavoritesStickers
+    // UserStickers,
+    // FavoritesStickers
 }

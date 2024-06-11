@@ -1,5 +1,6 @@
 let express = require("express");
-const { Sticker, Category } = require("../sequelize/models/models");
+const { Sticker, Category, StickerPack } = require("../sequelize/models/models");
+const { Op } = require("sequelize");
 
 
 let GetPublicDataRout = express.Router()
@@ -12,25 +13,78 @@ GetPublicDataRout.post("/getCategories", async (req, res) => {
 
 
 
-GetPublicDataRout.post("/getStickers", async (req, res) => {
-    let { categoryId } = req.body
+// GetPublicDataRout.post("/getStickers", async (req, res) => {
+//     let { categoryId } = req.body
 
-    console.log(categoryId)
+//     console.log(categoryId)
+//     try {
+
+//         let stickers = []
+//         let categoryName = null
+//         if (categoryId) {
+//             let category = await Category.findByPk(categoryId);
+//             categoryName = category.name
+
+//             stickers = await category.getStickers();
+//         } else {
+//             stickers = await Sticker.findAll();
+//         }
+
+
+//         res.status(200).json({ stickers, categoryName })
+//     } catch (error) {
+//         console.log(error)
+//         res.status(400).end()
+//     }
+// })
+
+
+GetPublicDataRout.post("/getStickerPacks", async (req, res) => {
+    let { categoryId, paramsMap } = req.body
+
+    console.log(paramsMap)
     try {
 
-        let stickers = []
+        let stickerPacks = []
         let categoryName = null
         if (categoryId) {
             let category = await Category.findByPk(categoryId);
             categoryName = category.name
 
-            stickers = await category.getStickers();
+            stickerPacks = await category.getStickerPacks({
+                where: {
+                    packName: {
+                        [Op.like]: `%${paramsMap.stickersSearch}%`
+                    },
+                },
+
+                include: {
+                    model: Sticker,
+                    as: 'Stickers',
+                    limit: 1
+
+                }
+            });
         } else {
-            stickers = await Sticker.findAll();
+            stickerPacks = await StickerPack.findAll({
+                where: {
+                    packName: {
+                        [Op.like]: `%${paramsMap.stickersSearch}%`
+                    },
+                },
+
+                include: {
+                    model: Sticker,
+                    as: 'Stickers',
+                    limit: 1
+
+                }
+            })
         }
 
 
-        res.status(200).json({ stickers, categoryName })
+
+        res.status(200).json({ stickerPacks, categoryName })
     } catch (error) {
         console.log(error)
         res.status(400).end()

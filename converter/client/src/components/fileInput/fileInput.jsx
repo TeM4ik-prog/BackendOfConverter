@@ -1,11 +1,11 @@
 import axios from "axios";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import localSitePath from "../../../localSitePath";
-import "./fileInput.css";
-import Sticker from "../sticker/stickerOne/stickerOne";
-import AddStickerWindow from "../addStickerWindow/addStickerWindow";
 import { StickersStatusContext } from "../../App";
+import AddStickerWindow from "../addStickerWindow/addStickerWindow";
+import "./fileInput.scss";
+import { Link } from "react-router-dom";
 
 
 
@@ -13,8 +13,32 @@ export default function FileInput() {
     const [stickersPaths, setStickersPaths] = useState([])
     const [waitingStatus, setWaitingStatus] = useState(false)
 
-    const [showDialog, setShowDialog] = useState(false)
+    const [userStickersPacks, setUserStickersPacks] = useState()
 
+    const [showDialog, setShowDialog] = useState(false)
+    const [showGifDoneConvert, setShowGifDoneConvert] = useState(false)
+
+
+    useEffect(() => {
+        axios.post(
+            `${localSitePath}/private/getUserPacks`,
+            {},
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            })
+            .then((response) => {
+                console.log("Resp data", response.data)
+                setUserStickersPacks(response.data)
+            })
+            .catch((error) => {
+                console.log(error)
+            });
+
+
+
+    }, [])
 
 
     let onSendStickers = async (e) => {
@@ -32,11 +56,18 @@ export default function FileInput() {
                 },
             })
             .then((response) => {
-                console.log(response.data.ar_paths)
-                setWaitingStatus(false)
-                setStickersPaths(response.data.ar_paths)
+                setTimeout(() => {
+                    console.log(response.data.ar_paths)
+                    setStickersPaths(response.data.ar_paths)
+                    setShowGifDoneConvert(true)
 
-                setShowDialog(true)
+                    setTimeout(() => {
+                        setShowDialog(true)
+                        setWaitingStatus(false)
+
+                    }, 2500);
+
+                }, 5000);
             })
             .catch((error) => {
                 console.log(error)
@@ -45,51 +76,67 @@ export default function FileInput() {
 
 
     return (
-        <StickersStatusContext.Provider value={null}>
-            <div className="container-convert-page" encType="multipart/form-data">
+        <>
+            {userStickersPacks && userStickersPacks.length > 0 ? (
+                <>
+                    <StickersStatusContext.Provider value={null}>
+                        <div className="container-convert-page" encType="multipart/form-data">
+                            {!waitingStatus ? (
+                                <>
+                                    <fieldset>
+                                        <legend>Выберете файл/файлы</legend>
+                                        <form className="stickers-send-form" onSubmit={onSendStickers}>
+                                            <input type="file" name="images" accept=".tgs" multiple required></input>
 
-                <fieldset className="field-file-form">
-                    <legend>Выберете файл/файлы</legend>
-                    <form className="stickers-send-form" onSubmit={onSendStickers}>
-                        <input type="file" name="images" accept=".tgs" multiple required></input>
+                                            <button type="submit">конвертировать</button>
+                                        </form>
 
-                        <button type="submit">конвертировать</button>
-                    </form>
+                                    </fieldset>
+                                    <h3>Как только стикеры конвертируются вы их увидите</h3>
+                                </>
+                            ) : (
+                                <div className="waiting-container">
 
-                </fieldset>
+                                    {!showGifDoneConvert ? (
+                                        <>
+                                            <p>Ожидайте...</p>
+                                            <img src='../../gifs/waiting.gif' />
+                                        </>
 
-
-
-                <div className="stickers-container">
-                    {!waitingStatus ? (
-                        <> {stickersPaths && stickersPaths.length > 0 ? (
-                            <>
-                                {stickersPaths.map((path) => (
-                                    <Sticker info={path} />
-                                    // <img className="sticker" src={path.url}></img>
-                                ))}
-
-                            </>
-                        ) : <h3>Здесь и в вашем профиле появятся ковертированные стикеры</h3>}
-                        </>
-                    ) : <h3>Ожидайте...</h3>}
-
-                </div>
+                                    ) : (
+                                        <>
+                                            <p>Конвертировано</p>
+                                            <img src='../../gifs/done.gif' />
+                                        </>
+                                    )}
 
 
 
-                {
-                    showDialog ? (
-                        <AddStickerWindow
-                            onSetShowDialog={setShowDialog}
-                            showDialog={showDialog}
-                            stickersData={stickersPaths}
-                            setStickersData={setStickersPaths}
-                        // setIsPasswordConfirmed={setIsPasswordConfirmed}
-                        />
-                    ) : null
-                }
-            </div>
-        </StickersStatusContext.Provider>
+                                </div>)
+                            }
+
+
+                            {
+                                showDialog ? (
+                                    <AddStickerWindow
+                                        onSetShowDialog={setShowDialog}
+                                        showDialog={showDialog}
+                                        stickersData={stickersPaths}
+                                        setStickersData={setStickersPaths}
+                                    // setIsPasswordConfirmed={setIsPasswordConfirmed}
+                                    />
+                                ) : null
+                            }
+                        </div >
+                    </StickersStatusContext.Provider >
+
+                </>
+            ) : (
+                <Link to={'/profile/myStickers'}>
+                    <p className="text-info-error">Создайте хотя бы один стикерпак</p>
+                </Link>
+            )}
+
+        </>
     )
 }

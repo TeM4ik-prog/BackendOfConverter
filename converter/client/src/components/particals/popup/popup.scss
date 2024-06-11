@@ -1,0 +1,29 @@
+.popups-container {
+  display: inline-flex;
+  flex-direction: column;
+  position: fixed;
+  flex-wrap: wrap;
+  transform: translateX(-50%);
+  align-items: center;
+  max-width: 90%;
+  min-width: 60%;
+  z-index: 999;
+  top: 0%;
+  left: 50%;
+
+
+  .popup {
+    box-shadow: inset 0px -2px 0px #000000;
+    border-radius: 0.3em;
+    text-align: center;
+    width: 100%;
+    background-color: red;
+    text-wrap: wrap;
+    padding: 0.3rem;
+    margin: auto;
+    font-size: calc(0.75em + 0.75vw);
+    /* padding: 1rem; */
+
+
+  }
+}

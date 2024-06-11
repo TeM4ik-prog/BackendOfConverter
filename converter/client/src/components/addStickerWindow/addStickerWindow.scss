@@ -1,0 +1,146 @@
+.dialog-sticker-container {
+    /* border: none; */
+    background-color: rgb(18, 18, 18);
+    margin: 0%;
+    display: inline-flex;
+    flex-direction: column;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    filter: none;
+    max-height: 80%;
+    min-height: 30%;
+    height: min-content;
+    overflow-y: auto;
+    /* max-width: 100%; */
+    width: 40%;
+    align-items: center;
+    /* min-width: max-content; */
+    border-radius: 0.4rem;
+    padding: 0.8rem;
+    z-index: 1000;
+
+
+    a{
+        cursor: pointer;
+    }
+}
+
+
+
+.close-image {
+    filter: invert(100%);
+    height: calc(1em + 1vw);
+    width: calc(1em + 1vw);
+}
+
+
+.params-sticker-container {
+    width: 100%;
+    height: 100%;
+    display: inline-flex;
+    flex-direction: column;
+    /* height: min-content; */
+    align-items: center;
+    justify-content: space-between;
+
+    column-gap: 0.5rem;
+
+    margin-bottom: 1.5rem;
+
+    border-bottom: 0.1rem gray solid;
+
+    input {
+        width: 100%;
+    }
+
+    select {
+        width: 100%;
+    }
+}
+
+.params-sticker-container * {
+    margin-bottom: 0.5rem;
+
+}
+
+
+.header-info-dialog {
+    display: inline-flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-bottom: 1rem;
+}
+
+.text-title-dialog {
+    margin: 0%;
+    color: #ffffff;
+}
+
+
+
+
+.input-password {
+    font-family: Inter;
+    font-size: 16px;
+    font-weight: 400;
+    box-sizing: border-box;
+    line-height: 160%;
+    appearance: none;
+    background-color: #363744;
+    height: min-content;
+    width: 100%;
+    color: #ebecf0;
+    padding: 0.5rem;
+    border-radius: 8px;
+    border: none;
+    outline: none;
+    z-index: 100;
+    box-shadow: 3px 3px 6px rgba(139, 139, 139, 0.634);
+    transition: 0.6s;
+}
+
+
+.butt-confirm {
+    font-size: 14px;
+    line-height: 160%;
+    border-radius: 8px;
+    width: 100%;
+    font-weight: 700;
+    height: 2.75em;
+    box-shadow: inset 0px -2px 0px #1849cc;
+    color: #ffffff;
+    background-color: #2663f0;
+    border: none;
+    cursor: pointer;
+    margin-bottom: 1.75%;
+    justify-content: end;
+    box-sizing: border-box;
+    /* margin-top: auto; */
+}
+
+
+
+.filter-block {
+    position: fixed;
+    top: 0%;
+    left: 0%;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.39);
+    filter: blur(30px);
+
+    z-index: 900;
+}
+
+
+
+
+@media (max-width: 720px) {
+    .dialog-sticker-container {
+        width: 80%;
+    }
+}

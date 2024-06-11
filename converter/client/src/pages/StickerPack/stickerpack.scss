@@ -1,0 +1,9 @@
+.change-info-container {
+    display: inline-block;
+    flex-direction: column;
+
+    p {
+        margin: 1rem;
+        font-size: calc(1em + 1vw);
+    }
+}

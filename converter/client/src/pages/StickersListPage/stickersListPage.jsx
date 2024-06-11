@@ -3,17 +3,27 @@ import StickersList from "../../components/sticker/StickersList/StickersList";
 import axios from "axios";
 import localSitePath from "../../../localSitePath";
 import Header from "../../components/particals/header/header";
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
+import StickerPacksList from "../../components/stickerPack/packsList/packsList";
 
 export default function StickersListPage() {
-    const [stickersData, setStickersData] = useState([])
+    const [stickersPacksData, setStickersPacksData] = useState([])
+
+    const [searchParams] = useSearchParams();
 
     let { category } = useParams()
 
     useEffect(() => {
+        const paramsMap = {
+            stickersSearch: searchParams.get("search") || '',
+
+        };
+        console.log(paramsMap)
+
+
         axios.post(
-            `${localSitePath}/data/getStickers`,
-            { categoryId: category, },
+            `${localSitePath}/data/getStickerPacks`,
+            { categoryId: category, paramsMap },
             {
                 headers: {
                     "Content-Type": "application/json",
@@ -21,22 +31,24 @@ export default function StickersListPage() {
             })
             .then((response) => {
                 console.log(response.data)
-                setStickersData(response.data)
+                setStickersPacksData(response.data)
+
+                // setStickersData(response.data)
             })
             .catch((error) => {
                 console.log(error)
             });
-    }, [category])
+    }, [category, searchParams, location.search])
 
     return (
         <>
             <Header />
 
-            <p>{stickersData.categoryName}</p>
+            {/* <p>{stickersData.categoryName}</p> */}
 
+            <StickerPacksList ar_packs={stickersPacksData.stickerPacks} />
 
-
-            <StickersList stickers={stickersData.stickers} />
+            {/* <StickersList stickers={stickersData.stickers} /> */}
         </>
     )
 }

@@ -12,14 +12,14 @@ UserEntryRoute.post("/login", async (req, res) => {
 
         if (user.password == password) {
             req.session.username = username
-            res.status(200).json({ massage: `пользователь ${username} успешно вошел` });
+            res.status(200).json({ message: `пользователь ${username} успешно вошел` });
         }
         else {
-            res.status(400).json({ errText: "Неправильный пароль" })
+            res.status(400).json({ message: "Неправильный пароль" })
         }
 
     } catch (error) {
-        res.status(400).json({ errText: "Пользователь не найден" })
+        res.status(400).json({ message: "Пользователь не найден" })
 
     }
 
@@ -36,13 +36,13 @@ UserEntryRoute.post("/register", async (req, res) => {
         await CreateUser({ username, password })
         req.session.username = username
 
-        res.status(200).json({ massage: `пользователь ${username} добавлен` });
+        res.status(200).json({ message: `пользователь ${username} добавлен` });
     } catch (error) {
         if (error.name === 'SequelizeUniqueConstraintError') {
-            res.status(400).json({ errText: "Пользователь с таким именем уже существует" });
+            res.status(400).json({ message: "Пользователь с таким именем уже существует" });
         } else {
             console.error('Ошибка при создании пользователя:', error);
-            res.status(500).json({ massage: 'Ошибка при создании пользователя' })
+            res.status(500).json({ message: 'Ошибка при создании пользователя' })
         }
     }
 

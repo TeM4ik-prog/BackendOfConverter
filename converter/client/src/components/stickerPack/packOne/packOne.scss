@@ -1,0 +1,36 @@
+.pack-container {
+    height: calc(10em + 3vw);
+    width: calc(8em + 3vw);
+    overflow: hidden;
+    margin: 0.5rem;
+    background-color: rgb(140, 140, 168);
+    color: black;
+    padding: 0.5rem;
+
+    border-radius: 0.2rem;
+    transition: 0.4s;
+    // margin: 0 auto 0 0;
+
+    .packName {
+        font-size: calc(1em + 1vw);
+        overflow: hidden;
+        margin: 0%;
+        width: 100%;
+        text-overflow: ellipsis;
+        text-wrap: nowrap;
+
+    }
+
+    img {
+        width: 100%;
+        height: auto;
+    }
+
+
+
+}
+
+.pack-container:hover {
+    scale: 105%;
+    box-shadow: 10px 10px 10px black;
+}

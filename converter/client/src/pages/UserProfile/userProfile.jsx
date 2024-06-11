@@ -1,12 +1,12 @@
-import { Link, Route, Routes } from "react-router-dom"
+import { Link, NavLink, Route, Routes } from "react-router-dom"
 
 import axios from "axios"
 import { useContext } from "react"
 import localSitePath from "../../../localSitePath"
 import { StickersStatusContext, userDataContext } from "../../App"
 
-import "./userProfile.css"
-import UserStickers from "./components/UserStickers/UserStickers"
+import "./userProfile.scss"
+import UserStickers from "./components/UserPacks/UserPacks"
 import FavoritesStickers from "./components/favorites/favorites"
 import FileInput from "../../components/fileInput/fileInput"
 
@@ -47,18 +47,18 @@ export default function UserProfile() {
                     </div>
 
                     <div className="user-interact">
-                        <Link to={`/profile/favorites`} replace>
+                        <NavLink to={`/profile/favorites`} replace>
                             <p>Избранные</p>
-                        </Link>
+                        </NavLink>
 
-                        <Link to={`/profile/myStickers`} replace>
-                            <p>Мои стикеры</p>
-                        </Link>
+                        <NavLink to={`/profile/myStickers`} replace>
+                            <p>Мои стикерпаки</p>
+                        </NavLink>
 
 
-                        <Link to={`/profile/convert`}>
+                        <NavLink to={`/profile/convert`}>
                             <p>Конвертировать</p>
-                        </Link>
+                        </NavLink>
                     </div>
 
                 </div>

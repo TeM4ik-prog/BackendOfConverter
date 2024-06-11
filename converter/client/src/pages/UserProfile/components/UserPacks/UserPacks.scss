@@ -1,0 +1,70 @@
+.user-packs-container-page {
+    display: inline-flex;
+    flex-direction: column;
+
+
+
+    button {
+        font-size: 20px;
+        text-wrap: nowrap;
+        margin: 0 auto 0 auto;
+        width: 90%;
+    }
+
+    .creation-form {
+        border-radius: 6px;
+        padding: 0.5rem;
+        border: 0.15rem solid gray;
+
+        display: inline-flex;
+
+        margin: 0.6rem auto 0 auto;
+
+        min-width: max-content;
+        width: 50%;
+
+        height: max-content;
+        max-height: 0;
+        overflow: hidden;
+        transition: opacity 0.5s ease-in-out, max-height 0.5s ease-in-out, padding 0.5s ease-in-out;
+        // opacity: 0;
+
+        box-sizing: border-box;
+
+
+        form {
+            height: 100%;
+            display: inline-flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            width: 100%;
+
+
+            // width: 30%;
+            // min-width: max-content;
+            // max-width: 30%;
+
+            // button {
+            //     min-width: max-content;
+            //     max-width: 30%;
+            // }
+        }
+
+    }
+
+    .creation-form.expanded {
+
+        max-height: 400px;
+        opacity: 1;
+    }
+
+    .creation-form.collapsed {
+
+        // margin: 0 auto 0 auto;
+        padding: 0%;
+        max-height: 0;
+        // border: none;
+        // height: 0px;
+        opacity: 0;
+    }
+}

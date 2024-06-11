@@ -28,7 +28,7 @@ export default function FavoritesStickers() {
 
     return (
         <>
-            <h2>Favorites</h2>
+            {/* <h2>Favorites</h2> */}
 
             <StickersList stickers={userFavorites} />
 

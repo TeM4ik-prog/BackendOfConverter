@@ -1,6 +1,6 @@
 import { useContext } from "react"
-import "./stickerOne.css"
-import { StickersStatusContext } from "../../../App"
+import "./stickerOne.scss"
+import { PopupContext, StickersStatusContext } from "../../../App"
 import { Link } from "react-router-dom"
 import axios from "axios"
 import localSitePath from "../../../../localSitePath"
@@ -10,6 +10,8 @@ export default function Sticker({ info }) {
 
     let status = useContext(StickersStatusContext)
 
+
+    let { showMessage } = useContext(PopupContext)
 
     let OnAddStickerToFavorites = () => {
         axios.post(
@@ -22,11 +24,12 @@ export default function Sticker({ info }) {
                 },
             })
             .then((response) => {
-                // showMessage({ message: response.data.message, bad: false });
+                console.log(response.data.message)
+                showMessage({ message: response.data.message, bad: false });
             })
             .catch((error) => {
-                console.log(error)
-                // showMessage({ message: error.response.data.message, bad: true });
+                console.log(error.response.data.message)
+                showMessage({ message: error.response.data.message, bad: true });
             });
     }
 
@@ -63,10 +66,13 @@ export default function Sticker({ info }) {
                 ) : <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZ40trFX91lyL64uOy7r3fWv6cOdiRMEGr1BO2P-DfyQ&s"></img>}
             </div>
 
+            {status ? (
+                <button className="button-download" onClick={(e) => DownloadFile(e, info.url, info.title)}>
+                    Скачать
+                </button>
 
-            <button className="button-download" onClick={(e) => DownloadFile(e, info.url, info.title)}>
-                Скачать
-            </button>
+            ) : null}
+
 
 
 
@@ -75,20 +81,20 @@ export default function Sticker({ info }) {
 
             {status === "favorites" ? (
                 <div className="butt-interact-container" onClick={OnDeleteStickerFromFavorites}>
-                    <img src="../icons/close.png"></img>
+                    <img src="/icons/close.png"></img>
                 </div>
 
             ) : status === "myStickers" ? (
-                <Link to={`/stickers/change/${info.stickerId}`}>
+                <Link to={`/stickerPacks/change/${info.stickerId}`}>
                     <div className="butt-interact-container">
-                        <img src="../icons/pencil.png"></img>
+                        <img src="/icons/pencil.png"></img>
                     </div>
 
                 </Link>
 
             ) : status === "main" ? (
                 <div className="butt-interact-container" onClick={OnAddStickerToFavorites}>
-                    <img src="../icons/love.png"></img>
+                    <img src="/icons/love.png"></img>
                 </div>
 
             ) : null

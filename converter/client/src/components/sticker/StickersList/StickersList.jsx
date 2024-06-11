@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react"
-import "./stickersList.css"
+import "./stickersList.scss"
 
-import "./stickersList.css"
 import localSitePath from "../../../../localSitePath"
 import axios from "axios";
 import Sticker from "../stickerOne/stickerOne";

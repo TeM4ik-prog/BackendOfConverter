@@ -12,7 +12,7 @@ const { Auth_session } = require("./All_middleware/auth_middleware");
 const PORT = process.env.PORT || 3000;
 let app = express()
 
-
+app.use('/stickers', express.static(path.join(__dirname, 'public/stickers')));
 app.use(express.static(path.join(__dirname, "./public")))
 
 
@@ -37,8 +37,8 @@ async function startServer() {
   try {
     await sequelize.authenticate();
 
-    // await sequelize.sync({ force: true });//удаление всех бд
-
+    await sequelize.sync({ force: true });//удаление всех бд
+    
     console.log('Соединение с базой данных установлено');
 
 

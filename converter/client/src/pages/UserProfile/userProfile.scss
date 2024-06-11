@@ -1,0 +1,95 @@
+.profile-container {
+    display: inline-flex;
+    flex-direction: column;
+    position: relative;
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 1rem;
+
+
+    .header-user-menu {
+        position: relative;
+        display: inline-flex;
+        flex-direction: column;
+        width: 100%;
+        background-color: rgb(66, 66, 66);
+        /* border-radius: 0.4rem; */
+        border-bottom-left-radius: 0.4rem;
+        border-bottom-right-radius: 0.4rem;
+        padding: 0.5em;
+        box-sizing: border-box;
+
+
+        .user-info {
+            display: inline-flex;
+            flex-direction: row;
+            /* align-items: center; */
+
+            margin-bottom: 0.5rem;
+
+            .title-data-user {
+                margin: 0 auto 0 0;
+
+                display: inline-flex;
+                flex-direction: column;
+
+                justify-content: space-evenly;
+
+                position: relative;
+
+                /* font-size: calc(1.05em + 0.75vw); */
+            }
+
+            .username {
+                margin: 0%;
+                font-size: calc(1.05em + 0.75vw);
+            }
+
+            .logout-text {
+                margin: 0px;
+
+                align-self: flex-start;
+                color: rgb(255, 37, 37);
+                cursor: pointer;
+            }
+        }
+
+        .user-interact {
+            display: inline-flex;
+            flex-direction: row;
+            justify-content: start;
+            border-top: 3px solid rgb(38, 38, 38);
+            border-radius: 5px;
+            overflow-x: auto;
+
+            a {
+                display: inline-flex;
+                text-wrap: nowrap !important;
+                width: max-content;
+
+                p {
+                    width: max-content;
+                    margin: auto 0 auto 0;
+                    text-wrap: nowrap !important;
+                    margin-right: 2rem;
+                }
+
+            }
+
+            a.active {
+                font-size: 110%;
+                text-decoration: underline;
+                color: rgb(101, 87, 255);
+            }
+
+
+        }
+
+
+
+
+
+    }
+
+
+}

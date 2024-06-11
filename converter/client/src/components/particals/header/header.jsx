@@ -1,5 +1,5 @@
-import { Link } from "react-router-dom"
-import "./header.css"
+import { Link, NavLink, useLocation, useParams, useSearchParams } from "react-router-dom"
+import "./header.scss"
 import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import localSitePath from "../../../../localSitePath";
@@ -8,7 +8,15 @@ import { userDataContext } from "../../../App";
 export default function Header() {
     let { userData } = useContext(userDataContext)
 
+    const location = useLocation();
+    const [searchParams] = useSearchParams();
+
     const [categories, setCategories] = useState(null)
+    const [searchInput, setSearchInput] = useState(searchParams.get("search") || '')
+
+
+
+    // let { category } = useParams()
 
     useEffect(() => {
         axios.post(
@@ -30,53 +38,84 @@ export default function Header() {
 
 
     return (
-        <div className="header-container">
 
-            <div className="user-info-entry">
-                {userData ?
-                    (<Link to={`/profile`}>
-                        <p>Профиль {userData.username}</p>
-                    </Link>)
-                    :
-                    <Link to={'/userentry'}>
-                        <p>Войти</p>
-                    </Link>
-                }
+        <>
+            <div className="header">
 
-            </div>
+                <div className="block-container">
+                    <div className="block-container__nav" >
+                        <NavLink to={"/"}>
+                            <p>Главная</p>
+                        </NavLink>
 
-            <div className="header-links">
-                <Link to={"/"}>
-                    <p>На главную</p>
-                </Link>
+                        <NavLink to={"/stickerPacks"}>
+                            <p>Cтикерпаки</p>
+                        </NavLink>
 
-                <Link to={"/stickers"}>
-                    <p>Cтикеры</p>
-                </Link>
+                        <NavLink to={"/convert"}>
+                            <p>Конвертировать</p>
+                        </NavLink>
 
-                <Link to={"/convert"}>
-                    <p>Конвертировать</p>
-                </Link>
-            </div>
-
-            <div className="categories">
-                <>
-                    {
-                        categories ? (
-                            <>
-                                {
-                                    categories.map((item, index) => (
-                                        <Link to={`/stickers/${item.categoryId}`}>
-                                            <p className="category-text" key={index}>{item.name}</p>
-                                        </Link>
-                                    ))
-                                }
-                            </>
-                        ) : <p className="category-text">загрузка категорий...</p>}
-                </>
-            </div>
+                    </div>
 
 
-        </div>
+                    <div className="block-container__searchProfile">
+                        <div className="input-container">
+                            <input placeholder="Поиск" value={searchInput}
+                                onChange={(e) => (setSearchInput(e.target.value))}
+                            />
+
+
+                            <button >
+                                <Link to={`/stickerPacks?search=${searchInput}`}>
+                                    <p>Поиск</p>
+                                </Link>
+                            </button>
+
+
+                        </div>
+
+
+                        <div className="block-container__searchProfile__profile">
+                            {userData ?
+                                (<Link to={`/profile`}>
+                                    <p>Профиль {userData.username}</p>
+                                </Link>)
+                                :
+                                <Link to={'/userentry'}>
+                                    <p>Войти</p>
+                                </Link>
+                            }
+                        </div>
+
+
+                    </div>
+                </div>
+
+                {location.pathname.startsWith("/stickerPacks") ? (
+                    <div className="categories">
+                        <>
+                            {
+                                categories ? (
+                                    <>
+                                        {
+                                            categories.map((item, index) => (
+                                                <NavLink to={`/stickerPacks/${item.categoryId}`}>
+                                                    <p className="category-text" key={index}>{item.name}</p>
+                                                </NavLink>
+                                            ))
+                                        }
+                                    </>
+                                ) : <p className="category-text">загрузка категорий...</p>}
+                        </>
+                    </div>
+
+                ) : null}
+
+
+
+            </div >
+
+        </>
     )
 }

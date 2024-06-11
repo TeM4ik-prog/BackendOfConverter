@@ -9,7 +9,7 @@ export default function RegisterRedirect() {
         <>
             {/* <Header /> */}
             <Link to={"/userentry"}>
-                <h1>Войдите для продолжения</h1>
+                <h2>Войдите для продолжения</h2>
             </Link>
         </>
     )
