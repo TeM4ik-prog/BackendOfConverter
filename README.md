@@ -8,6 +8,8 @@
 
 1.установить Docker(https://docs.docker.com/engine/install/)
 
+2. скачать и настроить mssql
+
 
 2.откройте папку
 
